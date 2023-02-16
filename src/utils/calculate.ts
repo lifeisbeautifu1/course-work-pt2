@@ -7,6 +7,23 @@ export const calculateInnerFunction = (l: number, n: number, x: number) => {
   );
 };
 
+export const calculateIteration = (
+  l: number,
+  n: number,
+  z: number,
+  λ: number,
+  t: number,
+  x: number
+) => {
+  const An = calculateAn(l, t);
+  const rightSide = calculateRightSide(l, t, x);
+  const [R, IM] = calucateComplexNumber(l, n, z, λ, t);
+  return calculateModuleOfComplexNumber([
+    R * An * rightSide,
+    IM * An * rightSide,
+  ]);
+};
+
 export const calculateRightSide = (l: number, n: number, x: number) => {
   return Math.sin((Math.PI * n * x) / l);
 };
