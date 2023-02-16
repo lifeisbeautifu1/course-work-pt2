@@ -38,71 +38,65 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
   const solve = (l: number, L: number, n: number, λ: number, t: number) => {
     setLoading(true);
 
-    const calculate = () => {
-      let data: Array<any> = [];
+    let data: Array<any> = [];
 
-      let interval = [1, 2, 5, 7];
+    let interval = [1, 2, 5, 7];
 
-      let firstGraphTmp: any[] = [];
+    let firstGraphTmp: any[] = [];
 
-      interval.forEach((z, i) => {
-        data = [];
-        for (let x = 0; x <= l; ++x) {
-          let R = 0;
-          let IM = 0;
-          for (let j = 1; j <= t; ++j) {
-            const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
-            R += tmpR;
-            IM += tmpIM;
-          }
-          data.push({
-            x,
-            u: calculateModuleOfComplexNumber([R, IM]),
-          });
+    interval.forEach((z, i) => {
+      data = [];
+      for (let x = 0; x <= l; ++x) {
+        let R = 0;
+        let IM = 0;
+        for (let j = 1; j <= t; ++j) {
+          const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
+          R += tmpR;
+          IM += tmpIM;
         }
-        firstGraphTmp.push({
-          data,
-          name: `z = ${z}`,
-          color: colors[i],
+        data.push({
+          x,
+          u: calculateModuleOfComplexNumber([R, IM]),
         });
+      }
+      firstGraphTmp.push({
+        data,
+        name: `z = ${z}`,
+        color: colors[i],
       });
+    });
 
-      let xInterval = [1, 2, 3, 4];
+    let xInterval = [1, 2, 3, 4];
 
-      let secondGraphTmp: any[] = [];
+    let secondGraphTmp: any[] = [];
 
-      xInterval.forEach((x, i) => {
-        data = [];
-        for (let z = 0; z <= L; ++z) {
-          let R = 0;
-          let IM = 0;
-          for (let j = 1; j <= t; ++j) {
-            const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
-            R += tmpR;
-            IM += tmpIM;
-          }
-          data.push({
-            z,
-            u: calculateModuleOfComplexNumber([R, IM]),
-          });
+    xInterval.forEach((x, i) => {
+      data = [];
+      for (let z = 0; z <= L; ++z) {
+        let R = 0;
+        let IM = 0;
+        for (let j = 1; j <= t; ++j) {
+          const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
+          R += tmpR;
+          IM += tmpIM;
         }
-        secondGraphTmp.push({
-          data,
-          name: `x = ${x}`,
-          color: colors[i],
+        data.push({
+          z,
+          u: calculateModuleOfComplexNumber([R, IM]),
         });
+      }
+      secondGraphTmp.push({
+        data,
+        name: `x = ${x}`,
+        color: colors[i],
       });
+    });
 
-      setFirstGraph(firstGraphTmp);
+    setFirstGraph(firstGraphTmp);
 
-      setSecondGraph(secondGraphTmp);
+    setSecondGraph(secondGraphTmp);
 
-      setLoading(false);
-    };
-
-    setTimeout(() => {
-      calculate();
-    }, 0);
+    setLoading(false);
   };
 
   return (

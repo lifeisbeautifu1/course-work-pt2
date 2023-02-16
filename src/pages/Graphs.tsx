@@ -23,6 +23,9 @@ const Graphs = () => {
 
   return (
     <div className="flex flex-col gap-4 items-center justify-center h-screen w-screen">
+      <p className="font-light text-xl text-gray-900">
+        График модуля комплексной амплитуды при фиксированном z
+      </p>
       <ComposedChart
         width={730}
         height={250}
@@ -51,6 +54,9 @@ const Graphs = () => {
         ))}
       </ComposedChart>
 
+      <p className="font-light text-xl text-gray-900">
+        График модуля комплексной амплитуды при фиксированном x
+      </p>
       <ComposedChart
         width={730}
         height={250}
