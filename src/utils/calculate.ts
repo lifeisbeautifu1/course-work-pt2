@@ -1,7 +1,6 @@
 export const calculateInnerFunction = (l: number, n: number, x: number) => {
   return (
-    (2 / l) *
-    12 *
+    (24 / l) *
     Math.exp(-Math.pow((2 * x - l) / (0.4 * l), 4)) *
     Math.sin((Math.PI * n * x) / l)
   );
@@ -42,7 +41,7 @@ export const calucateComplexNumber = (
 };
 
 export const calculateAn = (l: number, n: number) => {
-  const t = 100;
+  const t = 1000;
   const h = l / t;
   const xi: Array<number> = [];
   const fxi: Array<number> = [];
@@ -64,8 +63,6 @@ export const calculateAn = (l: number, n: number) => {
       oddSum += fxi[i];
     }
   }
-  // console.log(xi, fxi);
-  // console.log(evenSum, oddSum);
   return (h / 3) * (fxi[0] + fxi[t] + 2 * evenSum + 4 * oddSum);
 };
 

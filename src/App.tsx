@@ -10,12 +10,12 @@ import {
   CartesianGrid,
 } from "recharts";
 import {
+  calculateAn,
   calculateIteration,
   calculateModuleOfComplexNumber,
 } from "./utils/calculate";
 
 function App() {
-  // States
   const [l, setl] = useState(8);
   const [n, setN] = useState(1);
   const [λ, setλ] = useState(2);
@@ -34,7 +34,7 @@ function App() {
     for (let x = 0; x <= l; ++x) {
       let R = 0;
       let IM = 0;
-      for (let j = 1; j <= 200; ++j) {
+      for (let j = 1; j <= 100; ++j) {
         const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
         R += tmpR;
         IM += tmpIM;
@@ -46,7 +46,7 @@ function App() {
     }
     firstGraph.push({
       data,
-      name: `L = ${z}`,
+      name: `z = ${z}`,
       color: colors[i],
     });
   });
@@ -62,7 +62,7 @@ function App() {
   for (let z = 0; z <= L; ++z) {
     let R = 0;
     let IM = 0;
-    for (let j = 1; j <= 200; ++j) {
+    for (let j = 1; j <= 100; ++j) {
       const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
       R += tmpR;
       IM += tmpIM;
