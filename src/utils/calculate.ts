@@ -18,10 +18,7 @@ export const calculateIteration = (
   const An = calculateAn(l, t);
   const rightSide = calculateRightSide(l, t, x);
   const [R, IM] = calucateComplexNumber(l, n, z, λ, t);
-  return calculateModuleOfComplexNumber([
-    R * An * rightSide,
-    IM * An * rightSide,
-  ]);
+  return [R * An * rightSide, IM * An * rightSide];
 };
 
 export const calculateRightSide = (l: number, n: number, x: number) => {

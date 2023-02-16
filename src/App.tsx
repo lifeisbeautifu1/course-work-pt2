@@ -9,7 +9,10 @@ import {
   ComposedChart,
   CartesianGrid,
 } from "recharts";
-import { calculateIteration } from "./utils/calculate";
+import {
+  calculateIteration,
+  calculateModuleOfComplexNumber,
+} from "./utils/calculate";
 
 function App() {
   // States
@@ -20,24 +23,32 @@ function App() {
 
   let data: Array<any> = [];
 
-  let z = L / 2;
+  let colors: Array<string> = ["#f97316", "#22c55e", "#3b82f6", "#f43f5e"];
+
+  let interval = [1, 2, 5, 10];
 
   let firstGraph: any[] = [];
 
-  for (let x = 0; x <= l; ++x) {
-    let value = 0;
-    for (let j = 1; j <= 20; ++j) {
-      value += calculateIteration(l, n, z, λ, j, x);
+  interval.forEach((z, i) => {
+    data = [];
+    for (let x = 0; x <= l; ++x) {
+      let R = 0;
+      let IM = 0;
+      for (let j = 1; j <= 200; ++j) {
+        const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
+        R += tmpR;
+        IM += tmpIM;
+      }
+      data.push({
+        x,
+        u: calculateModuleOfComplexNumber([R, IM]),
+      });
     }
-    data.push({
-      x,
-      u: value,
+    firstGraph.push({
+      data,
+      name: `L = ${z}`,
+      color: colors[i],
     });
-  }
-
-  firstGraph.push({
-    data,
-    name: "L = 5",
   });
 
   const dataFormater = (num: number) => {
@@ -49,13 +60,16 @@ function App() {
   data = [];
 
   for (let z = 0; z <= L; ++z) {
-    let value = 0;
-    for (let j = 1; j <= 20; ++j) {
-      value += calculateIteration(l, n, z, λ, j, x);
+    let R = 0;
+    let IM = 0;
+    for (let j = 1; j <= 200; ++j) {
+      const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
+      R += tmpR;
+      IM += tmpIM;
     }
     data.push({
       z,
-      u: value,
+      u: calculateModuleOfComplexNumber([R, IM]),
     });
   }
   let secondGraph: any[] = [];
@@ -73,7 +87,7 @@ function App() {
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="x">
+        <XAxis dataKey="x" allowDuplicatedCategory={false}>
           <Label value="x" position="insideBottomRight" />
         </XAxis>
         <YAxis tickFormatter={dataFormater}>
@@ -90,7 +104,7 @@ function App() {
             data={i.data}
             name={i.name}
             key={i.name}
-            stroke="#8884d8"
+            stroke={i.color}
           />
         ))}
       </ComposedChart>
