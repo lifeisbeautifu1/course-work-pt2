@@ -40,7 +40,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     let data: Array<any> = [];
 
-    let interval = [1, 2, 5, 7];
+    let interval = [1, 2, 5, 10];
 
     let firstGraphTmp: any[] = [];
 
