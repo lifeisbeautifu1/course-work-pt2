@@ -40,7 +40,13 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     let data: Array<any> = [];
 
-    let interval = [1, 2, 5, 10];
+    let tmp = L / 4;
+    let interval = [
+      Math.round(tmp),
+      Math.round(tmp * 2),
+      Math.round(tmp * 3),
+      L,
+    ];
 
     let firstGraphTmp: any[] = [];
 
@@ -66,7 +72,14 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       });
     });
 
-    let xInterval = [1, 2, 3, 4];
+    tmp = l / 8;
+
+    let xInterval = [
+      Math.round(tmp),
+      Math.round(tmp * 2),
+      Math.round(tmp * 3),
+      Math.ceil(tmp * 4),
+    ];
 
     let secondGraphTmp: any[] = [];
 

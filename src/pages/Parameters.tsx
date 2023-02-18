@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCalculationContext } from "../context/calculationContext";
+import { calculateAn } from "../utils/calculate";
 
 const Parameters = () => {
   const [l, setl] = useState("8");
