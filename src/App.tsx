@@ -1,12 +1,17 @@
 import { Route, Routes } from "react-router-dom";
-import { Parameters, Graphs } from "./pages";
+import { lazy, Suspense } from "react";
+
+const Parameters = lazy(() => import("./pages/Parameters"));
+const Graphs = lazy(() => import("./pages/Graphs"));
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Parameters />} />
-      <Route path="/solution" element={<Graphs />} />
-    </Routes>
+    <Suspense fallback={<div>loading...</div>}>
+      <Routes>
+        <Route path="/" element={<Parameters />} />
+        <Route path="/solution" element={<Graphs />} />
+      </Routes>
+    </Suspense>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCalculationContext } from "../context/calculationContext";
-import { calculateAn } from "../utils/calculate";
+// import { calculateAn } from "../utils/calculate";
 
 const Parameters = () => {
   const [l, setl] = useState("8");
@@ -18,6 +18,27 @@ const Parameters = () => {
     e.preventDefault();
     solve(+l, +L, +n, +λ, +t);
   };
+
+  // let sum = 4.683546554217005;
+  // let eps = 0.01;
+  // let tmp_sum = 0;
+  // let i;
+  // for (i = 1; i <= 35; ++i) {
+  //   const tmp = calculateAn(+l, i);
+  //   tmp_sum += tmp;
+  //   // if (Math.max(sum, tmp_sum) - Math.min(sum, tmp_sum) <= eps) {
+  //   //   break;
+  //   // }
+  // }
+  // let tmp_sum_2 = 0;
+  // for (i = 30; i <= 59; ++i) {
+  //   const tmp = calculateAn(+l, i);
+  //   tmp_sum_2 += tmp;
+  //   // if (Math.max(sum, tmp_sum) - Math.min(sum, tmp_sum) <= eps) {
+  //   //   break;
+  //   // }
+  // }
+  // console.log(tmp_sum, tmp_sum_2);
 
   useEffect(() => {
     if (!loading && secondGraph.length > 0) {
