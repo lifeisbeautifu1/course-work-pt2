@@ -22,7 +22,7 @@ const Graphs = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center h-screen w-screen">
+    <div className="flex flex-col gap-4 items-center justify-center h-screen w-screen overflow-y-scroll">
       <p className="font-light text-xl text-gray-900">
         График модуля комплексной амплитуды при фиксированном z
       </p>

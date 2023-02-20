@@ -47,7 +47,7 @@ const Parameters = () => {
   }, [loading, secondGraph]);
 
   return (
-    <div className="flex flex-col gap-4 py-12 items-center h-screen w-screen">
+    <div className="flex flex-col gap-4 py-12 items-center h-screen w-screen overflow-y-scroll">
       <div className="flex flex-col rounded-lg p-6 border border-gray-200 shadow">
         <p className="font-bold text-xl text-gray-900">Курсовая работа УМФ</p>
         <p className="font-light text-gray-700">Задача:</p>
