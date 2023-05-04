@@ -27,11 +27,11 @@ const Graphs = () => {
         График модуля комплексной амплитуды при фиксированном z
       </p>
       <ComposedChart
-        width={730}
-        height={250}
+        width={1024}
+        height={450}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray={10} />
         <XAxis dataKey="x" allowDuplicatedCategory={false}>
           <Label value="x" position="insideBottomRight" />
         </XAxis>
@@ -58,8 +58,8 @@ const Graphs = () => {
         График модуля комплексной амплитуды при фиксированном x
       </p>
       <ComposedChart
-        width={730}
-        height={250}
+        width={1024}
+        height={450}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
