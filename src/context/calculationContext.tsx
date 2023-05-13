@@ -95,7 +95,8 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     const tmp = [];
     const temp = [];
-    for await (const mult of [1, 2, 3, 4, 5, 6]) {
+    // 6, 7
+    for await (const mult of [1, 2, 3, 4, 5]) {
       const res = await axios.post("http://localhost:5000/", {
         l,
         L,
@@ -189,10 +190,11 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     temp.forEach((t) => {
       let Sum = 0;
+
       t.forEach((el, index) => {
         Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
       });
-      console.log("First:", Math.pow(Sum, 0.5));
+      console.log("First:", Math.pow(Sum, 0.5) / 3);
     });
 
     setFirstGraph(firstGraphTmp);

@@ -1,54 +1,53 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useCalculationContext } from "../context/calculationContext";
+
+import { Task } from "../components";
 
 const Parameters = () => {
-  const [l, setl] = useState("8");
-  const [n, setN] = useState("1");
-  const [λ, setλ] = useState("2");
-  const [L, setL] = useState("10");
-  const [K, setK] = useState("20000");
-  const [I, setI] = useState("1000");
-
-  const [x, setX] = useState("1");
-  const [z, setZ] = useState("1");
-
-  const { solve, test, loading, secondGraph, firstGraph } =
-    useCalculationContext();
-
-  const navigate = useNavigate();
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    solve(+l, +L, +n, +λ, +K, +I);
-  };
-
-  const handleSubmitTest = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    test(+l, +L, +n, +λ, +z, +x);
-  };
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && firstGraph.length > 0) {
-      navigate("/solution");
-    }
-  }, [loading, secondGraph]);
+    const blob = document.getElementById("blob");
+
+    window.onpointermove = (event) => {
+      const { clientX, clientY } = event;
+
+      blob.animate(
+        {
+          left: `${clientX}px`,
+          top: `${clientY}px`,
+        },
+        { duration: 3000, fill: "forwards" }
+      );
+    };
+  }, []);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <div className="flex flex-col gap-4 py-12 items-center">
-      <div className="container mx-auto flex items-start justify-center gap-8">
-        <div className="flex flex-col rounded-lg p-6 border border-gray-200 shadow">
-          <p className="font-bold text-xl text-gray-900">Курсовая работа УМФ</p>
-          <p className="font-light text-gray-700">Задача:</p>
-          <img src="./statement.png" className="w-80" />
-        </div>
-        <div className="flex flex-col rounded-lg p-6 border border-gray-200 shadow">
-          <p className="font-bold text-xl text-gray-900">Разностная схема</p>
-          <p className="font-light text-gray-700">Простейшая неявная:</p>
-          <img src="./scheme.png" className="w-[500px]" />
+    <div className="h-screen w-screen grid place-content-center bg-black">
+      <Task isOpen={isOpen} closeModal={closeModal} />
+
+      <div className="card absolute z-10 left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%]">
+        <div className="card-content">
+          <h3>Информация</h3>
+          <h1>Курсовая работа</h1>
+          <p>
+            По численным методам решения краевых задач математической физики
+          </p>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="text-sm text-white underline outline-none border-none"
+          >
+            Рассчитать
+          </button>
         </div>
       </div>
-      <div className="flex gap-8 items-start">
+      <div id="blob"></div>
+      <div id="blur"></div>
+
+      {/* <div className="flex gap-8 items-start">
         <div className="rounded-lg p-6 mt-4 border border-gray-200 shadow">
           <p className="font-semibold">Введите параметры:</p>
           <form onSubmit={handleSubmit} className="w-80 flex flex-col gap-4">
@@ -258,7 +257,7 @@ const Parameters = () => {
             </button>
           </form>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
