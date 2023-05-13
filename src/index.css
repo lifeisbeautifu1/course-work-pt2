@@ -87,7 +87,7 @@ input[type="number"] {
   font-weight: bold;
 }
 
-.card-content > button {
+.card-content button {
   color: mediumslateblue;
 }
 

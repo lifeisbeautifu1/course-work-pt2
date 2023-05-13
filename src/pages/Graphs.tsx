@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import {
   Legend,
   Line,
@@ -36,14 +36,23 @@ const Graphs = () => {
       star.offsetHeight;
       star.style.animation = "";
     };
-
+    const timeouts: any = [];
+    const intervals: any = [];
     for (const star of document.getElementsByClassName("magic-star")) {
-      setTimeout(() => {
+      let timeout = setTimeout(() => {
         animate(star);
 
-        setInterval(() => animate(star), 1000);
+        let i = setInterval(() => animate(star), 1000);
+        intervals.push(i);
       }, index++ * (interval / 3));
+
+      timeouts.push(timeout);
     }
+
+    return () => {
+      timeouts.forEach((t) => clearTimeout(t));
+      intervals.forEach((i) => clearInterval(i));
+    };
   }, []);
 
   return (
@@ -119,12 +128,19 @@ const Graphs = () => {
           {firstGraph.map((i) => (
             <Line
               type="monotone"
-              dot={false}
               dataKey="u"
               data={i.data}
               name={i.name}
               key={i.name}
+              strokeWidth="3"
               stroke={i.color}
+              dot={{ fill: "#2e4355", stroke: i.color, strokeWidth: 2, r: 0 }}
+              activeDot={{
+                fill: "#2e4355",
+                stroke: i.color,
+                strokeWidth: 5,
+                r: 2,
+              }}
             />
           ))}
         </LineChart>
@@ -199,27 +215,34 @@ const Graphs = () => {
           {secondGraph.map((i) => (
             <Line
               type="monotone"
-              dot={false}
               dataKey="u"
               data={i.data}
               name={i.name}
               key={i.name}
               stroke={i.color}
+              strokeWidth="3"
+              dot={{ fill: "#2e4355", stroke: i.color, strokeWidth: 2, r: 0 }}
+              activeDot={{
+                fill: "#2e4355",
+                stroke: i.color,
+                strokeWidth: 5,
+                r: 2,
+              }}
             />
           ))}
         </LineChart>
+        <button
+          onClick={() => {
+            setFirstGraph([]);
+            setSecondGraph([]);
+            navigate("/");
+          }}
+          type="button"
+          className="pog mt-4"
+        >
+          Назад
+        </button>
       </div>
-      <button
-        onClick={() => {
-          setFirstGraph([]);
-          setSecondGraph([]);
-          navigate("/");
-        }}
-        type="button"
-        className="py-2.5 px-10 text-sm font-medium text-gray-900 bg-white rounded border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:text-blue-700 inline-flex items-center"
-      >
-        Назад
-      </button>
     </div>
   );
 };

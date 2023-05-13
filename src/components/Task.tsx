@@ -6,10 +6,11 @@ import { useCalculationContext } from "../context/calculationContext";
 
 interface TaskProps {
   isOpen: boolean;
+  toggle: boolean;
   closeModal: (value: boolean) => void;
 }
 
-const Task: React.FC<TaskProps> = ({ isOpen, closeModal }) => {
+const Task: React.FC<TaskProps> = ({ isOpen, closeModal, toggle }) => {
   const [l, setl] = useState("");
   const [n, setN] = useState("");
   const [λ, setλ] = useState("");
@@ -17,8 +18,8 @@ const Task: React.FC<TaskProps> = ({ isOpen, closeModal }) => {
   const [K, setK] = useState("");
   const [I, setI] = useState("");
 
-  //   const [x, setX] = useState("1");
-  //   const [z, setZ] = useState("1");
+  const [x, setX] = useState("");
+  const [z, setZ] = useState("");
 
   const { solve, test, loading, secondGraph, firstGraph } =
     useCalculationContext();
@@ -27,13 +28,8 @@ const Task: React.FC<TaskProps> = ({ isOpen, closeModal }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    solve(+l, +L, +n, +λ, +K, +I);
+    toggle ? solve(+l, +L, +n, +λ, +K, +I) : test(+l, +L, +n, +λ, +z, +x);
   };
-
-  //   const handleSubmitTest = (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     test(+l, +L, +n, +λ, +z, +x);
-  //   };
 
   useEffect(() => {
     if (!loading && firstGraph.length > 0) {
@@ -95,18 +91,38 @@ const Task: React.FC<TaskProps> = ({ isOpen, closeModal }) => {
                       value={n}
                       onChange={(e) => setN(e.target.value)}
                     />
-                    <Input
-                      type="number"
-                      placeholder="Введите число разбиений по координате z"
-                      value={K}
-                      onChange={(e) => setK(e.target.value)}
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Введите число разбиений по координате x"
-                      value={I}
-                      onChange={(e) => setI(e.target.value)}
-                    />
+                    {toggle ? (
+                      <>
+                        <Input
+                          type="number"
+                          placeholder="Введите число разбиений по координате z"
+                          value={K}
+                          onChange={(e) => setK(e.target.value)}
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Введите число разбиений по координате x"
+                          value={I}
+                          onChange={(e) => setI(e.target.value)}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Input
+                          type="number"
+                          placeholder="Введите x"
+                          value={x}
+                          onChange={(e) => setX(e.target.value)}
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Введите z"
+                          value={z}
+                          onChange={(e) => setZ(e.target.value)}
+                        />
+                      </>
+                    )}
+
                     <button type="submit" className="pog outline-none">
                       {loading ? (
                         <>
@@ -130,7 +146,7 @@ const Task: React.FC<TaskProps> = ({ isOpen, closeModal }) => {
                           Рассчет...
                         </>
                       ) : (
-                        <span>Рассчитать</span>
+                        <span>{toggle ? "Рассчитать" : "Наложить"}</span>
                       )}
                     </button>
                   </form>

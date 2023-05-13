@@ -65,12 +65,12 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
   const [loading, setLoading] = useState(false);
 
   let colors: Array<string> = [
-    "#818cf8",
-    "#6366f1",
-    "#4f46e5",
-    "#4338ca",
-    "#3730a3",
-    "#312e81",
+    "#7B1FA2",
+    "#673AB7",
+    "#F48FB1",
+    "#e11d48",
+    "#f97316",
+    "#22c55e",
   ];
 
   const test = async (
@@ -96,7 +96,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     const tmp = [];
     const temp = [];
     // 6, 7
-    for await (const mult of [1, 2, 3, 4, 5]) {
+    for await (const mult of [1, 2, 3, 4]) {
       const res = await axios.post("http://localhost:5000/", {
         l,
         L,
@@ -107,6 +107,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       });
       const u = res.data;
       const data = [];
+      console.log(u);
       for (let x = 0; x <= l; ++x) {
         data.push({
           x,
@@ -155,9 +156,9 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       });
     }
     firstGraphTmp.push({
-      data3,
+      data: data3,
       name: `Аналитическое`,
-      color: "#333",
+      color: "#fff",
     });
 
     data = [];
@@ -177,25 +178,25 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     secondGraphTmp.push({
       data,
       name: `Аналитическое`,
-      color: "#333",
+      color: "#fff",
     });
 
-    tmp.forEach((t) => {
-      let Sum = 0;
-      t.forEach((el, index) => {
-        Sum += Math.pow(Math.abs(el.u - data[index]?.u), 2);
-      });
-      console.log("Second:", Math.pow(Sum, 0.5));
-    });
+    // tmp.forEach((t) => {
+    //   let Sum = 0;
+    //   t.forEach((el, index) => {
+    //     Sum += Math.pow(Math.abs(el.u - data[index]?.u), 2);
+    //   });
+    //   console.log("Second:", Math.pow(Sum, 0.5));
+    // });
 
-    temp.forEach((t) => {
-      let Sum = 0;
+    // temp.forEach((t) => {
+    //   let Sum = 0;
 
-      t.forEach((el, index) => {
-        Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
-      });
-      console.log("First:", Math.pow(Sum, 0.5) / 3);
-    });
+    //   t.forEach((el, index) => {
+    //     Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
+    //   });
+    //   console.log("First:", Math.pow(Sum, 0.5) / 3);
+    // });
 
     setFirstGraph(firstGraphTmp);
 
