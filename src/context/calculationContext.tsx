@@ -65,12 +65,12 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
   const [loading, setLoading] = useState(false);
 
   let colors: Array<string> = [
-    "#f97316",
-    "#22c55e",
-    "#3b82f6",
-    "#f43f5e",
-    "#d946ef",
-    "#7c3aed",
+    "#818cf8",
+    "#6366f1",
+    "#4f46e5",
+    "#4338ca",
+    "#3730a3",
+    "#312e81",
   ];
 
   const test = async (
