@@ -163,7 +163,8 @@ input[type="number"] {
 }
 
 .pog {
-  color: hsl(210 6% 93%);
+  /* color: hsl(210 6% 93%); */
+  color: #fff !important;
   background-color: hsl(0 0% 6%);
   box-shadow: 0 0 0 2px hsl(300 99.4% 67.1% / 0.102),
     -15px 0 30px -15px hsl(24 100% 49.9% / 0.523),
