@@ -96,7 +96,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     const tmp = [];
     const temp = [];
     // 6, 7
-    for await (const mult of [1, 2, 3, 4]) {
+    for await (const mult of [1, 2, 3, 4, 5]) {
       const res = await axios.post("http://localhost:5000/", {
         l,
         L,
@@ -107,11 +107,11 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       });
       const u = res.data;
       const data = [];
-      console.log(u);
+      // console.log(u);
       for (let x = 0; x <= l; ++x) {
         data.push({
           x,
-          u: u?.[Math.round(z / (L / start[0])) - 1][
+          u: u?.[z !== 0 ? Math.round(z / (L / start[0])) - 1 : 0][
             Math.round(x / (l / start[1]))
           ],
         });
@@ -137,8 +137,8 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       });
       temp.push(data);
       tmp.push(data2);
-      start[0] *= 2;
-      start[1] *= 4;
+      start[0] *= 4;
+      start[1] *= 2;
     }
 
     let data3: any = [];
@@ -186,7 +186,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     //   t.forEach((el, index) => {
     //     Sum += Math.pow(Math.abs(el.u - data[index]?.u), 2);
     //   });
-    //   console.log("Second:", Math.pow(Sum, 0.5));
+    //   console.log("Second:", Math.pow(Sum, 0.5) / Math.pow(11, 0.5));
     // });
 
     // temp.forEach((t) => {
@@ -242,12 +242,18 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     interval.forEach((z, i) => {
       data = [];
-      for (let x = 0; x <= l; ++x) {
+      for (let j = 0; j < I; ++j) {
         data.push({
-          x,
-          u: u?.[Math.round(z / (L / K)) - 1][Math.round(x / (l / I))],
+          x: (j * l) / I,
+          u: u?.[Math.round(z / (L / K)) - 1][j],
         });
       }
+      // for (let x = 0; x <= l; ++x) {
+      //   data.push({
+      //     x,
+      //     u: u?.[Math.round(z / (L / K)) - 1][Math.round(x / (l / I))],
+      //   });
+      // }
       firstGraphTmp.push({
         data,
         name: `z = ${z}`,
@@ -266,14 +272,20 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     xInterval.forEach((x, i) => {
       data = [];
-      for (let z = 0; z <= L; ++z) {
+      for (let j = 0; j < K; ++j) {
         data.push({
-          z,
-          u: u?.[Math.round(z !== 0 ? z / (L / K) - 1 : 0)][
-            Math.round(x / (l / I))
-          ],
+          z: (j * L) / K,
+          u: u?.[j][Math.round(x / (l / I))],
         });
       }
+      // for (let z = 0; z <= L; ++z) {
+      //   data.push({
+      //     z,
+      //     u: u?.[Math.round(z !== 0 ? z / (L / K) - 1 : 0)][
+      //       Math.round(x / (l / I))
+      //     ],
+      //   });
+      // }
       secondGraphTmp.push({
         data,
         name: `x = ${x}`,
