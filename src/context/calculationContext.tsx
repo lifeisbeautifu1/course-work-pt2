@@ -96,7 +96,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     const tmp = [];
     const temp = [];
     // 6, 7
-    for await (const mult of [1, 2, 3, 4, 5]) {
+    for await (const mult of [1, 2, 3, 4, 5, 6]) {
       const res = await axios.post("http://localhost:5000/", {
         l,
         L,
@@ -111,7 +111,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       for (let x = 0; x <= l; ++x) {
         data.push({
           x,
-          u: u?.[z !== 0 ? Math.round(z / (L / start[0])) - 1 : 0][
+          u: u?.[Math.round(z / (L / start[0]))][
             Math.round(x / (l / start[1]))
           ],
         });
@@ -125,7 +125,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       for (let z = 0; z <= L; ++z) {
         data2.push({
           z,
-          u: u?.[z !== 0 ? Math.round(z / (L / start[0])) - 1 : 0][
+          u: u?.[Math.round(z / (L / start[0]))][
             Math.round(X / (l / start[1]))
           ],
         });
@@ -181,22 +181,43 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       color: "#fff",
     });
 
-    // tmp.forEach((t) => {
-    //   let Sum = 0;
-    //   t.forEach((el, index) => {
-    //     Sum += Math.pow(Math.abs(el.u - data[index]?.u), 2);
-    //   });
-    //   console.log("Second:", Math.pow(Sum, 0.5) / Math.pow(11, 0.5));
-    // });
-
     // temp.forEach((t) => {
     //   let Sum = 0;
 
     //   t.forEach((el, index) => {
     //     Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
     //   });
-    //   console.log("First:", Math.pow(Sum, 0.5) / 3);
+    //   console.log("First:", Math.pow(Sum, 0.5));
     // });
+    // temp.forEach((t) => {
+    //   let Max = 0;
+
+    //   t.forEach((el, index) => {
+    //     Max =
+    //       Max > Math.abs(el.u - data3[index]?.u)
+    //         ? Max
+    //         : Math.abs(el.u - data3[index]?.u);
+    //   });
+    //   console.log("First:", Max);
+    // });
+
+    // tmp.forEach((t) => {
+    //   let Sum = 0;
+    //   t.forEach((el, index) => {
+    //     Sum += Math.pow(Math.abs(el.u - data[index]?.u), 2);
+    //   });
+    //   console.log("Second:", Math.pow(Sum, 0.5));
+    // });
+    tmp.forEach((t) => {
+      let Max = 0;
+      t.forEach((el, index) => {
+        Max =
+          Max > Math.abs(el.u - data[index]?.u)
+            ? Max
+            : Math.abs(el.u - data[index]?.u);
+      });
+      console.log("Second:", Max);
+    });
 
     setFirstGraph(firstGraphTmp);
 

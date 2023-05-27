@@ -113,7 +113,7 @@ const Graphs = () => {
               fontSize: 20,
               fontWeight: 700,
               fill: "#FFFFFF",
-              value: "Амплитуда u(t, z)",
+              value: "Амплитуда u(x, z)",
               angle: -90,
             }}
             tickFormatter={dataFormater}
@@ -200,7 +200,7 @@ const Graphs = () => {
               fontSize: 20,
               fontWeight: 700,
               fill: "#FFFFFF",
-              value: "Амплитуда u(t, z)",
+              value: "Амплитуда u(x, z)",
               angle: -90,
             }}
             tickFormatter={dataFormater}
