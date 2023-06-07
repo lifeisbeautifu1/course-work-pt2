@@ -27,7 +27,7 @@ const Parameters = () => {
   };
 
   return (
-    <div className="h-screen w-screen grid place-content-center bg-black">
+    <div className="h-screen w-screen overflow-hidden grid place-content-center bg-black">
       <Task isOpen={isOpen} toggle={toggle} closeModal={closeModal} />
 
       <div className="card absolute z-10 left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%]">

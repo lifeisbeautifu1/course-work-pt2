@@ -11,10 +11,10 @@ interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ isOpen, closeModal, toggle }) => {
-  const [l, setl] = useState("");
-  const [n, setN] = useState("");
-  const [λ, setλ] = useState("");
-  const [L, setL] = useState("");
+  const [l, setl] = useState("8");
+  const [n, setN] = useState("1");
+  const [λ, setλ] = useState("2");
+  const [L, setL] = useState("10");
   const [K, setK] = useState("");
   const [I, setI] = useState("");
 
