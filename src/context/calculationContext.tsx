@@ -95,11 +95,9 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       [11, 11],
       [41, 21],
       [161, 41],
-      [641, 81],
-      [2561, 161],
+      [641, 161],
+      [2561, 641],
       // [10241, 321],
-      // [10241, 321],
-      // [40961, 2561],
     ];
 
     const tmp = [];
@@ -132,83 +130,100 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
         name: `I = ${I} K = ${K}`,
         color: colors[index - 1],
       });
-      const data2 = [];
-      for (let z = 0; z <= L; ++z) {
-        data2.push({
-          z,
-          u: u?.[Math.round(z / (L / (K - 1)))][Math.round(X / (l / (I - 1)))],
+
+      let data3: any = [];
+      let Sum = 0;
+      for (let i = 0; i <= I - 1; ++i) {
+        let R = 0;
+        let IM = 0;
+        for (let j = 1; j <= 100; ++j) {
+          const [tmpR, tmpIM] = calculateIteration(
+            l,
+            n,
+            (Math.round(z / (L / (K - 1))) * L) / (K - 1),
+            λ,
+            j,
+            (i * l) / (I - 1)
+          );
+          R += tmpR;
+          IM += tmpIM;
+        }
+        data3.push({
+          x: (i * l) / (I - 1),
+          u: calculateModuleOfComplexNumber([R, IM]),
         });
+        Sum += Math.pow(
+          calculateModuleOfComplexNumber([R, IM]) -
+            u[Math.round(z / (L / (K - 1)))][i],
+          2
+        );
       }
-      secondGraphTmp.push({
-        data: data2,
-        name: `I = ${I} K = ${K}`,
-        color: colors[index - 1],
-      });
-      temp.push(data);
+      Sum /= I - 1;
+      Sum = Math.pow(Sum, 0.5);
+      console.log(Sum);
+
+      // firstGraphTmp.push({
+      //   data: data3,
+      //   name: `Аналитическое`,
+      //   color: "#fff",
+      // });
+      // const data2 = [];
+      // for (let z = 0; z <= L; ++z) {
+      //   data2.push({
+      //     z,
+      //     u: u?.[Math.round(z / (L / (K - 1)))][Math.round(X / (l / (I - 1)))],
+      //   });
+      // }
+      // secondGraphTmp.push({
+      //   data: data2,
+      //   name: `I = ${I} K = ${K}`,
+      //   color: colors[index - 1],
+      // });
+      // temp.push(data);
       index++;
-      tmp.push(data2);
+      // tmp.push(data2);
     }
 
-    let data3: any = [];
-    for (let x = 0; x <= l; x += 1) {
-      let R = 0;
-      let IM = 0;
-      for (let j = 1; j <= 100; ++j) {
-        const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, x);
-        R += tmpR;
-        IM += tmpIM;
-      }
-      data3.push({
-        x,
-        u: calculateModuleOfComplexNumber([R, IM]),
-      });
-    }
-    firstGraphTmp.push({
-      data: data3,
-      name: `Аналитическое`,
-      color: "#fff",
-    });
+    // let data4: any = [];
+    // for (let z = 0; z <= L; z += 1) {
+    //   let R = 0;
+    //   let IM = 0;
+    //   for (let j = 1; j <= 100; ++j) {
+    //     const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, X);
+    //     R += tmpR;
+    //     IM += tmpIM;
+    //   }
+    //   data4.push({
+    //     x: X,
+    //     u: calculateModuleOfComplexNumber([R, IM]),
+    //   });
+    // }
+    // secondGraphTmp.push({
+    //   data: data4,
+    //   name: `Аналитическое`,
+    //   color: "#fff",
+    // });
 
-    let data4: any = [];
-    for (let z = 0; z <= L; z += 1) {
-      let R = 0;
-      let IM = 0;
-      for (let j = 1; j <= 100; ++j) {
-        const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, X);
-        R += tmpR;
-        IM += tmpIM;
-      }
-      data4.push({
-        x: X,
-        u: calculateModuleOfComplexNumber([R, IM]),
-      });
-    }
-    secondGraphTmp.push({
-      data: data4,
-      name: `Аналитическое`,
-      color: "#fff",
-    });
+    // temp.forEach((t) => {
+    //   let Sum = 0;
 
-    temp.forEach((t) => {
-      let Sum = 0;
+    //   // let max = 0;
+    //   t.forEach((el, index) => {
+    //     Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
+    //     // let norm = Math.abs(el.u - data3[index]?.u);
+    //     // max = norm > max ? norm : max;
+    //   });
+    //   console.log("First:", Math.pow(Sum, 0.5));
+    //   // console.log("First: ", max);
+    // });
 
-      // let max = 0;
-      t.forEach((el, index) => {
-        Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
-        // let norm = Math.abs(el.u - data3[index]?.u);
-        // max = norm > max ? norm : max;
-      });
-      console.log("First:", Math.pow(Sum, 0.5));
-      // console.log("First: ", max);
-    });
-
-    tmp.forEach((t) => {
-      let Sum = 0;
-      t.forEach((el, index) => {
-        Sum += Math.pow(Math.abs(el.u - data4[index]?.u), 2);
-      });
-      console.log("Second:", Math.pow(Sum, 0.5));
-    });
+    // tmp.forEach((t) => {
+    //   let Sum = 0;
+    //   t.forEach((el, index) => {
+    //     Sum += Math.pow(Math.abs(el.u - data4[index]?.u), 2);
+    //   });
+    //   console.log("Second:", Math.pow(Sum, 0.5));
+    // });
 
     setFirstGraph(firstGraphTmp);
 
