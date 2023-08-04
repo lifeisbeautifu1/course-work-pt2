@@ -238,7 +238,7 @@ const Graphs = () => {
             navigate("/");
           }}
           type="button"
-          className="pog mt-4"
+          className="pog mt-4 min-w-[200px]"
         >
           Назад
         </button>

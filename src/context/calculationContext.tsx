@@ -1,53 +1,28 @@
 import { createContext, useContext, useState } from "react";
+import axios from "axios";
 import {
   calculateIteration,
   calculateModuleOfComplexNumber,
 } from "../utils/calculate";
-import axios from "axios";
+import type { SolveParams, TestParams } from "../types";
 
-const calculationContext = createContext<{
+axios.defaults.baseURL = "http://localhost:5000";
+
+const CalculationContext = createContext<{
   firstGraph: Array<any>;
   secondGraph: Array<any>;
   setFirstGraph: React.Dispatch<React.SetStateAction<any[]>>;
   setSecondGraph: React.Dispatch<React.SetStateAction<any[]>>;
-  solve: (
-    l: number,
-    L: number,
-    n: number,
-    λ: number,
-    K: number,
-    I: number
-  ) => void;
-  test: (
-    l: number,
-    L: number,
-    n: number,
-    λ: number,
-    z: number,
-    X: number
-  ) => void;
+  solve: (params: SolveParams) => void;
+  test: (params: TestParams) => void;
   loading: boolean;
 }>({
   firstGraph: [],
   secondGraph: [],
   setFirstGraph: () => {},
   setSecondGraph: () => {},
-  solve: async (
-    l: number,
-    L: number,
-    n: number,
-    λ: number,
-    I: number,
-    K: number
-  ) => {},
-  test: async (
-    l: number,
-    L: number,
-    n: number,
-    λ: number,
-    z: number,
-    X: number
-  ) => {},
+  solve: async () => {},
+  test: async () => {},
   loading: false,
 });
 
@@ -73,39 +48,29 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     "#22c55e",
   ];
 
-  const test = async (
-    l: number,
-    L: number,
-    n: number,
-    λ: number,
-    z: number,
-    X: number
-  ) => {
+  const test = async ({ l, L, n, λ, z, X }: TestParams) => {
     setLoading(true);
-
-    let data: Array<any> = [];
 
     let firstGraphTmp: any[] = [];
 
     let secondGraphTmp: any[] = [];
 
-    // Это наложение
-    //             K    I
+    // Это разбиения для наложения
+    // z * 4 и x * 2
+    // hz + hx^2
+    // K    I
     const start = [
-      [11, 11],
-      [41, 21],
-      [161, 41],
-      [641, 161],
-      [2561, 641],
-      // [10241, 321],
+      [20, 20],
+      [80, 40],
+      [320, 80],
+      [1280, 160],
+      [5120, 320],
     ];
 
-    const tmp = [];
-    const temp = [];
-    // 6, 7
-    let index = 1;
+    let index = 0;
+
     for await (const [K, I] of start) {
-      const res = await axios.post("http://localhost:5000/", {
+      const res = await axios.post("/", {
         l,
         L,
         n,
@@ -113,117 +78,104 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
         I,
         K,
       });
+
       const u = res.data;
 
-      const data = [];
-
-      for (let x = 0; x <= l; x += 1) {
-        // console.log("x index", x / (l / (start[1] - 1)));
-        // console.log("z index", z / (L / (start[0] - 1)));
-        data.push({
+      // First graph
+      const firstGraphData = [];
+      for (let x = 0; x <= l; ++x) {
+        firstGraphData.push({
           x,
-          u: u?.[Math.round(z / (L / (K - 1)))][Math.round(x / (l / (I - 1)))],
+          u: u?.[Math.round(z / (L / K))][Math.round(x / (l / I))],
         });
       }
       firstGraphTmp.push({
-        data,
+        data: firstGraphData,
         name: `I = ${I} K = ${K}`,
-        color: colors[index - 1],
+        color: colors[index],
       });
+      // First graph calculation over
 
-      let data3: any = [];
-      let Sum = 0;
-      for (let i = 0; i <= I - 1; ++i) {
-        let R = 0;
-        let IM = 0;
-        for (let j = 1; j <= 100; ++j) {
-          const [tmpR, tmpIM] = calculateIteration(
-            l,
-            n,
-            (Math.round(z / (L / (K - 1))) * L) / (K - 1),
-            λ,
-            j,
-            (i * l) / (I - 1)
-          );
-          R += tmpR;
-          IM += tmpIM;
-        }
-        data3.push({
-          x: (i * l) / (I - 1),
-          u: calculateModuleOfComplexNumber([R, IM]),
+      // Second graph
+      const secondGraphData = [];
+      for (let z = 0; z <= L; ++z) {
+        secondGraphData.push({
+          z,
+          u: u?.[Math.round(z / (L / K))][Math.round(X / (l / I))],
         });
-        Sum += Math.pow(
-          calculateModuleOfComplexNumber([R, IM]) -
-            u[Math.round(z / (L / (K - 1)))][i],
-          2
-        );
       }
-      Sum /= I - 1;
-      Sum = Math.pow(Sum, 0.5);
-      console.log(Sum);
+      secondGraphTmp.push({
+        data: secondGraphData,
+        name: `I = ${I} K = ${K}`,
+        color: colors[index],
+      });
+      // Second graph calculation over
 
-      // firstGraphTmp.push({
-      //   data: data3,
-      //   name: `Аналитическое`,
-      //   color: "#fff",
-      // });
-      // const data2 = [];
-      // for (let z = 0; z <= L; ++z) {
-      //   data2.push({
-      //     z,
-      //     u: u?.[Math.round(z / (L / (K - 1)))][Math.round(X / (l / (I - 1)))],
-      //   });
-      // }
-      // secondGraphTmp.push({
-      //   data: data2,
-      //   name: `I = ${I} K = ${K}`,
-      //   color: colors[index - 1],
-      // });
-      // temp.push(data);
       index++;
-      // tmp.push(data2);
     }
 
-    // let data4: any = [];
-    // for (let z = 0; z <= L; z += 1) {
-    //   let R = 0;
-    //   let IM = 0;
-    //   for (let j = 1; j <= 100; ++j) {
-    //     const [tmpR, tmpIM] = calculateIteration(l, n, z, λ, j, X);
-    //     R += tmpR;
-    //     IM += tmpIM;
-    //   }
-    //   data4.push({
-    //     x: X,
-    //     u: calculateModuleOfComplexNumber([R, IM]),
-    //   });
-    // }
-    // secondGraphTmp.push({
-    //   data: data4,
-    //   name: `Аналитическое`,
-    //   color: "#fff",
-    // });
+    const K = start[4][0];
+    const I = start[4][1];
+    // First graph analitical calculation
+    let firstGraphAnaliticData: any = [];
 
-    // temp.forEach((t) => {
-    //   let Sum = 0;
+    for (let x = 0; x <= l; ++x) {
+      let R = 0;
+      let IM = 0;
+      for (let t = 1; t <= 100; ++t) {
+        const [tmpR, tmpIM] = calculateIteration({
+          l,
+          n,
+          z: (Math.round(z / (L / K)) * L) / K,
+          λ,
+          t,
+          x: (Math.round(x / (l / I)) * l) / I,
+        });
+        R += tmpR;
+        IM += tmpIM;
+      }
+      firstGraphAnaliticData.push({
+        x,
+        u: calculateModuleOfComplexNumber([R, IM]),
+      });
+    }
 
-    //   // let max = 0;
-    //   t.forEach((el, index) => {
-    //     Sum += Math.pow(Math.abs(el.u - data3[index]?.u), 2);
-    //     // let norm = Math.abs(el.u - data3[index]?.u);
-    //     // max = norm > max ? norm : max;
-    //   });
-    //   console.log("First:", Math.pow(Sum, 0.5));
-    //   // console.log("First: ", max);
-    // });
+    firstGraphTmp.push({
+      data: firstGraphAnaliticData,
+      name: `Аналитическое`,
+      color: "#a3a3a3",
+    });
+    // First graph analitical calculation over
 
-    // tmp.forEach((t) => {
-    //   let Sum = 0;
-    //   t.forEach((el, index) => {
-    //     Sum += Math.pow(Math.abs(el.u - data4[index]?.u), 2);
-    //   });
-    //   console.log("Second:", Math.pow(Sum, 0.5));
-    // });
+    // Second graph analitical calculation
+    let secondGraphAnaliticData: any = [];
+    for (let z = 0; z <= L; z += 1) {
+      let R = 0;
+      let IM = 0;
+      for (let t = 1; t <= 100; ++t) {
+        const [tmpR, tmpIM] = calculateIteration({
+          l,
+          n,
+          z: (Math.round(z / (L / K)) * L) / K,
+          λ,
+          t,
+          x: (Math.round(X / (l / I)) * l) / I,
+        });
+        R += tmpR;
+        IM += tmpIM;
+      }
+      secondGraphAnaliticData.push({
+        z,
+        u: calculateModuleOfComplexNumber([R, IM]),
+      });
+    }
+
+    secondGraphTmp.push({
+      data: secondGraphAnaliticData,
+      name: `Аналитическое`,
+      color: "#a3a3a3",
+    });
+    // Second graph analitical calculation over
 
     setFirstGraph(firstGraphTmp);
 
@@ -232,14 +184,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     setLoading(false);
   };
 
-  const solve = async (
-    l: number,
-    L: number,
-    n: number,
-    λ: number,
-    K: number,
-    I: number
-  ) => {
+  const solve = async ({ l, L, n, λ, K, I }: SolveParams) => {
     setLoading(true);
 
     let data: Array<any> = [];
@@ -249,6 +194,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     let secondGraphTmp: any[] = [];
 
     let tmp = L / 4;
+
     let interval = [
       Math.round(tmp),
       Math.round(tmp * 2),
@@ -256,7 +202,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       L,
     ];
 
-    const res = await axios.post("http://localhost:5000/", {
+    const res = await axios.post("/", {
       l,
       L,
       n,
@@ -269,10 +215,10 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     interval.forEach((z, i) => {
       data = [];
-      for (let x = 0; x <= l; ++x) {
+      for (let j = 0; j < I; ++j) {
         data.push({
-          x,
-          u: u?.[Math.round(z / (L / (K - 1)))][Math.round(x / (l / (I - 1)))],
+          x: (j * l) / I,
+          u: u?.[Math.round(z / (L / K))][j],
         });
       }
 
@@ -296,8 +242,8 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       data = [];
       for (let j = 0; j < K; ++j) {
         data.push({
-          z: (j * L) / (K - 1),
-          u: u?.[j][Math.round(x / (l / (I - 1)))],
+          z: (j * L) / K,
+          u: u?.[j][Math.round(x / (l / I))],
         });
       }
 
@@ -316,7 +262,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
   };
 
   return (
-    <calculationContext.Provider
+    <CalculationContext.Provider
       value={{
         firstGraph,
         secondGraph,
@@ -328,10 +274,10 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       }}
     >
       {children}
-    </calculationContext.Provider>
+    </CalculationContext.Provider>
   );
 };
 
 export default CalculationContextProvider;
 
-export const useCalculationContext = () => useContext(calculationContext);
+export const useCalculationContext = () => useContext(CalculationContext);

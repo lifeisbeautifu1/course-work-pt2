@@ -28,14 +28,16 @@ const Task: React.FC<TaskProps> = ({ isOpen, closeModal, toggle }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toggle ? solve(+l, +L, +n, +λ, +K, +I) : test(+l, +L, +n, +λ, +z, +x);
+    toggle
+      ? solve({ l: +l, L: +L, n: +n, λ: +λ, K: +K, I: +I })
+      : test({ l: +l, L: +L, n: +n, λ: +λ, z: +z, X: +x });
   };
 
   useEffect(() => {
     if (!loading && firstGraph.length > 0) {
       navigate("/solution");
     }
-  }, [loading, secondGraph]);
+  }, [loading, secondGraph, firstGraph]);
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
