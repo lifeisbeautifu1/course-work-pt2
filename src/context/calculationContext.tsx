@@ -60,12 +60,20 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     // hz + hx^2
     // K    I
     const start = [
-      [20, 20],
-      [80, 40],
-      [320, 80],
-      [1280, 160],
-      [5120, 320],
+      [10, 10],
+      [40, 20],
+      [160, 40],
+      [640, 80],
+      [2560, 160],
+      [10240, 320],
     ];
+    // const start = [
+    //   [20, 20],
+    //   [80, 40],
+    //   [320, 80],
+    //   [1280, 160],
+    //   [5120, 320],
+    // ];
 
     let index = 0;
 
@@ -114,8 +122,8 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       index++;
     }
 
-    const K = start[4][0];
-    const I = start[4][1];
+    const K = start[start.length - 1][0];
+    const I = start[start.length - 1][1];
     // First graph analitical calculation
     let firstGraphAnaliticData: any = [];
 
@@ -149,7 +157,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     // Second graph analitical calculation
     let secondGraphAnaliticData: any = [];
-    for (let z = 0; z <= L; z += 1) {
+    for (let z = 0; z <= L; z++) {
       let R = 0;
       let IM = 0;
       for (let t = 1; t <= 100; ++t) {
@@ -215,7 +223,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     interval.forEach((z, i) => {
       data = [];
-      for (let j = 0; j < I; ++j) {
+      for (let j = 0; j <= I; ++j) {
         data.push({
           x: (j * l) / I,
           u: u?.[Math.round(z / (L / K))][j],
@@ -240,7 +248,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     xInterval.forEach((x, i) => {
       data = [];
-      for (let j = 0; j < K; ++j) {
+      for (let j = 0; j <= K; ++j) {
         data.push({
           z: (j * L) / K,
           u: u?.[j][Math.round(x / (l / I))],
