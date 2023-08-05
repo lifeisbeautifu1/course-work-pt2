@@ -46,6 +46,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     "#e11d48",
     "#f97316",
     "#22c55e",
+    "#84cc16",
   ];
 
   const test = async ({ l, L, n, λ, z, X }: TestParams) => {
@@ -61,11 +62,13 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     // K    I
     const start = [
       [10, 10],
-      [40, 20],
-      [160, 40],
-      [640, 80],
-      [2560, 160],
-      [10240, 320],
+      [20, 20],
+      [40, 40],
+      [160, 160],
+      [320, 320],
+      [640, 640],
+      [1280, 1280],
+      [2560, 2560],
     ];
     // const start = [
     //   [20, 20],

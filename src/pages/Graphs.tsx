@@ -56,9 +56,9 @@ const Graphs = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 py-12 items-center ">
+    <div className="flex flex-col gap-4 py-12 items-center">
       <div className="h-screen flex flex-col items-center">
-        <h1 className="font-bold header text-5xl text-center mb-10 text-gray-200">
+        <h1 className="font-bold header text-5xl text-center mb-10">
           График модуля комплексной амплитуды <br />{" "}
           <span className="magic">
             <span className="magic-star">
@@ -146,7 +146,7 @@ const Graphs = () => {
         </LineChart>
       </div>
       <div className="h-screen flex flex-col items-center">
-        <h1 className="font-bold header text-5xl text-center mb-10 text-gray-200">
+        <h1 className="font-bold header text-5xl text-center mb-10 ">
           График модуля комплексной амплитуды <br />{" "}
           <span className="magic">
             <span className="magic-star">
