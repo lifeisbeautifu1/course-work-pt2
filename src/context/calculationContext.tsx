@@ -94,7 +94,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     let data = await Promise.all(promises);
 
-    for await (const [K, I] of start) {
+    for (const [K, I] of start) {
       const u = data[index].data;
 
       // First graph
