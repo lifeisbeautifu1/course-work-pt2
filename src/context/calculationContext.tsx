@@ -57,8 +57,6 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
     let secondGraphTmp: any[] = [];
 
     // Это разбиения для наложения
-    // z * 4 и x * 2
-    // hz + hx^2
     // K    I
     const start = [
       [10, 10],
@@ -68,7 +66,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       [320, 320],
       [640, 640],
       [1280, 1280],
-      [2560, 2560],
+      // [2560, 2560],
     ];
     // const start = [
     //   [20, 20],
@@ -80,17 +78,24 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
 
     let index = 0;
 
-    for await (const [K, I] of start) {
-      const res = await axios.post("/", {
-        l,
-        L,
-        n,
-        λ,
-        I,
-        K,
-      });
+    const promises = [];
+    for (const [K, I] of start) {
+      promises.push(
+        axios.post("/", {
+          l,
+          L,
+          n,
+          λ,
+          I,
+          K,
+        })
+      );
+    }
 
-      const u = res.data;
+    let data = await Promise.all(promises);
+
+    for await (const [K, I] of start) {
+      const u = data[index].data;
 
       // First graph
       const firstGraphData = [];
