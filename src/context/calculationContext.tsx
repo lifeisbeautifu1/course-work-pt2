@@ -66,15 +66,7 @@ const CalculationContextProvider: React.FC<CalculationContextProviderProps> = ({
       [320, 320],
       [640, 640],
       [1280, 1280],
-      // [2560, 2560],
     ];
-    // const start = [
-    //   [20, 20],
-    //   [80, 40],
-    //   [320, 80],
-    //   [1280, 160],
-    //   [5120, 320],
-    // ];
 
     let index = 0;
 
